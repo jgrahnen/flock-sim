@@ -6,3 +6,6 @@ doc/
 
 # Vim backup files (just clutter up the landscape)
 *~
+
+# The executable
+flocking
