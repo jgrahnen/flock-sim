@@ -6,6 +6,10 @@ doc/
 
 # Vim backup files (just clutter up the landscape)
 *~
+*.swp
 
 # The executable
 flocking
+
+# Development notes, not for public consumption.
+dev.log
