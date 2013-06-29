@@ -1,0 +1,188 @@
+/**
+ * \file sdl-wrapper.cpp
+ *
+ * Functions that simplify using the Simple DirectMedia Layer to draw stuff
+ * to screen.
+ *
+ * Mainly facilities for drawing individual pixes/images to the screen.
+ *
+ * @author	Johan Grahnen
+ * @since	2013-06-29
+ *
+ */
+#include "sdl-wrapper.h"
+#include <iostream>
+
+using namespace std;
+
+/* Function for drawing a single pixel on a 32-bit color-depth screen.
+ * Only sets the pixel, doesn't update the screen.
+ *
+ * Returns false on inability to lock the screen to draw, true otherwise.
+ */
+bool drawPixel32(SDL_Surface* screen, unsigned int x, unsigned int y, Uint8 R, Uint8 G, Uint8 B){
+	Uint32 color = SDL_MapRGB(screen->format, R, G, B);
+
+	/* Lock surface if necessary.
+	 */
+	if(SDL_MUSTLOCK(screen)){
+		if( SDL_LockSurface(screen) < 0){
+			return false;
+		}
+	}
+
+	/* Set the pixel.
+	 */
+	Uint32* pBuffer = (Uint32 *)screen->pixels + y*screen->pitch/4 + x;
+	*pBuffer = color;
+
+	/* Unlock.
+	 */
+	if(SDL_MUSTLOCK(screen)){
+		SDL_UnlockSurface(screen);
+	}
+
+	return true;
+}
+
+/* Draws an image to the target screen by blitting. Doesn't update the
+ * screen automatically.
+ *
+ * Returns false on inability to lock the target screen, true otherwise.
+ *
+ * SHOULD IMPLEMENT BOUNDS CHECKING ON THE TARGET SCREEN?
+ */
+bool drawWholeImage(SDL_Surface* targetDisplay, SDL_Surface* sourceDisplay, unsigned int x, unsigned int y){
+	/* Lock surface if necessary.
+	 */
+	if(SDL_MUSTLOCK(targetDisplay)){
+		if( SDL_LockSurface(targetDisplay) < 0){
+			return false;
+		}
+	}
+	
+	/* Blit the source onto the target.
+	 */
+	SDL_Rect destRect;
+	destRect.x = x;
+	destRect.y = y;
+	SDL_BlitSurface(sourceDisplay, NULL, targetDisplay, &destRect);
+
+	/* Unlock.
+	 */
+	if(SDL_MUSTLOCK(targetDisplay)){
+		SDL_UnlockSurface(targetDisplay);
+	}
+
+	return true;
+}
+
+/* Draws part of an image onto the target surface by blitting.
+ *
+ * Returns false on inability to lock the screen before drawing,
+ * true otherwise.
+ *
+ * SHOULD IMPLEMENT BOUNDS CHECKING HERE...
+ *
+ * WHAT DOES THIS ACTUALLY DRAW?
+ */
+bool drawPartOfImage(SDL_Surface* targetDisplay, SDL_Surface* sourceDisplay, unsigned int targetX, unsigned int targetY, unsigned int sourceX, unsigned int sourceY, unsigned int sourceWidth, unsigned int sourceHeight){
+	/* Lock surface if necessary.
+	 */
+	if(SDL_MUSTLOCK(targetDisplay)){
+		if( SDL_LockSurface(targetDisplay) < 0){
+			return false;
+		}
+	}
+	
+	/* Blit the source onto the target.
+	 */
+	SDL_Rect destRect;
+	SDL_Rect sourceRect;
+	destRect.x = targetX;
+	destRect.y = targetY;
+	sourceRect.x = sourceX;
+	sourceRect.y = sourceY;
+	sourceRect.w = sourceWidth;
+	sourceRect.h = sourceHeight;
+
+	// CHECK FOR PROPER COORDINATES IN THE SOURCE
+	// AND TARGET?
+
+	SDL_BlitSurface(sourceDisplay, &sourceRect, targetDisplay, &destRect);
+
+	/* Unlock.
+	 */
+	if(SDL_MUSTLOCK(targetDisplay)){
+		SDL_UnlockSurface(targetDisplay);
+	}
+
+	return true;
+
+}
+
+/* Function to make a particular RGB color transparent on a surface.
+ *
+ * Returns false if the surface doesn't exist, true otherwise.
+ */
+bool transparentize(SDL_Surface* targetDisplay, unsigned int R, unsigned int G, unsigned int B){
+	if(targetDisplay == NULL){
+		return false;
+	}
+
+	SDL_SetColorKey(targetDisplay, SDL_SRCCOLORKEY | SDL_RLEACCEL, SDL_MapRGB(targetDisplay->format, R, G, B));
+
+	return true;
+}
+
+/* Fuction to turn on SDL and create a 32-bit, hardware accelerated
+ * display.
+ *
+ * Returns a pointer to the drawable surface on success, NULL on
+ * failure.
+ */
+SDL_Surface* initializeDisplay(unsigned int width, unsigned int height){
+	SDL_Surface* display = NULL;
+
+	/* Initialize the library itself.
+	 */
+	if(SDL_Init(SDL_INIT_EVERYTHING) < 0){
+		return display;
+	}
+
+	/* Setup the display.
+	 */
+	if((display = SDL_SetVideoMode(width, height, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL){
+		return NULL;
+	}
+
+	return display;
+}
+
+/* Function to load an image.
+ *
+ * Returns the properly formatted image as a Surface or NULL on failure.
+ */
+SDL_Surface* loadBMPImage(const char* file){
+	SDL_Surface* loaded = 0;
+	SDL_Surface* image = 0;
+
+	if((loaded = SDL_LoadBMP(file)) == NULL){
+		return loaded;
+	}
+	else{
+		image = SDL_DisplayFormat(loaded);
+		SDL_FreeSurface(loaded);
+	}
+
+	return image;
+}
+
+/* Function to quit on unrecoverable SDL error. Exits with error code
+ * 1 and prints the most recent error.
+ */
+void cleanUpAndQuit(){
+	SDL_Quit();
+	cerr << SDL_GetError() << endl;
+	exit(1);
+}

@@ -1,0 +1,85 @@
+Suggestions and ideas for improvement:
+
+* Get the whole thing into git.
+
+* Write a real readme.
+
+  Use Markdown? I think that displays auto-magically on github.
+
+  Note the dependency on having SDL-dev installed (give a URL or something,
+  and require a particular version #).
+
+* Publish on Github.
+
+* Get rid of the "using namespace std" stuff.
+
+* Switch to more efficient method for updating world state (see below).
+
+* Re-factor a lot of the projection math in the acceleration calculations.
+
+* Implement a better numerical integrator than Euler (see below).
+
+* Implement threading to speed up the calculations.
+
+* Cap the rendering speed to e.g 60 FPS (instead of the current "as fast as
+  you can draw it" approach).
+
+* Include some sort of collision detection? Would certainly cure some of
+  the problems with "bouncing" off other boids at very short distances.
+
+* Switch to C++11 standard code instead of C++0x, and utilize some of the
+  shiny new features (for auto, etc.).
+
+  Also clean up the style a little bit (less C89, more modern).
+
+* Switch to OpenGL for the graphics, and some really simple models? Would have
+  to go up to 3d on the math, but it shouldn't be so bad.
+
+* Add Newton drag when the velocity exceeds some constant (see e.g.
+  the Reynolds number of fish in water)?
+
+* Implement having more than one flock (flock attribute)?
+
+* Have the flocks fight each other? If it's two-vs-one or better for either
+  flock, kill the opponent (turns blue or something and doesn't move anymore).
+
+  Might want to use a grid to determine how many opposing flock members
+  are nearby. might in fact switch over to Verlet cells entirely (or
+  spatial hashing).
+
+* Do something intelligent about the edges: pan the camera? Zoom out? Show
+  some sort of background tile?
+
+* Switch over to having them move on a surface -- say, a sphere.
+
+* Reduce the size of the time step relative to the coordinates? It's now
+  1:1, but smaller time step would be mean better collision detection
+  (among other things).
+
+  Another improvement would be to switch from the Euler method to Verlet
+  integration, the midpoint method, or something similar. See Wikipedia.
+
+* Idea: when one boid kills another, add this to total energy reserves? And
+  let the swimming action run on energy -- i.e. sooner or later they starve
+  to death?
+
+* Optimize by only calculating the inter-boid distance matrix once per
+  frame, and then referring to it (keep it as a class attribute, or
+  something).
+
+* Consider spatial hashing and Verlet cells to speed up the calculations.
+  Quadtrees are a hoot, I hear.
+
+* Calculate all the accelerations at once? Could be preferable to having
+  separate functions...
+
+* Implement a genetic algorithm for flock "evolution". Tournament selection
+  will be fine: each genotype defines a flock, flocks fight for some
+  pre-determined time, winner advances.
+
+  What's being optimized here is the flocking parameters. Should show
+  some interesting co-evolutionary effects in the long run.
+
+* Two-player version of flock-vs-flock: set params, watch the fight. More
+  complicated: have one cursor per player that each flock follows. WSAD
+  vs arrow keys.
