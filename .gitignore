@@ -1,0 +1,8 @@
+# Built objects
+obj/
+
+# Docs: rebuild with Doxygen from source as necessary
+doc/
+
+# Vim backup files (just clutter up the landscape)
+*~
