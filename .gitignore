@@ -9,8 +9,10 @@ doc/
 *~
 *.swp
 
-# The executable
+# The executables
 flocking
+src/geometry/ptest
+src/geometry/vtest
 
 # Development notes, not for public consumption.
 dev.log
