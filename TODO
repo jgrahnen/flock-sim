@@ -1,14 +1,5 @@
 Suggestions and ideas for improvement:
 
-* Write a real readme.
-
-  Use Markdown? I think that displays auto-magically on github.
-
-  Note the dependency on having SDL-dev installed (give a URL or something,
-  and require a particular version #).
-
-* Publish on Github.
-
 * Get rid of the "using namespace std" stuff.
 
 * Switch to more efficient method for updating world state (see below).
