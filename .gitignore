@@ -1,5 +1,6 @@
 # Built objects
-obj/
+*.o
+*.a
 
 # Docs: rebuild with Doxygen from source as necessary
 doc/
