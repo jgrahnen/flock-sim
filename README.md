@@ -1,5 +1,5 @@
-Grahnen flocking simulator
-==========================
+Flocking simulator
+==================
 
 Simulates "Boids" that move in a flock-like manner toward your mouse pointer. 
 This is a rough implementation of the simulation algorithm for reproducing the
@@ -57,7 +57,7 @@ window, following your mouse pointer. The behavior of the Boids can be altered
 by adjusting the simulation parameters: increasing the coefficient of
 cohesion makes them stick tighter together, decreasing the coefficient of
 attraction causes them to care less about the location of the mouse pointer,
-and so on. See below for an extended explanation.
+and so on. See below for an extended explanation of the parameters.
 
 When you're tired of staring at the Boids progress across the screen, simply
 close the window to quit.
@@ -69,13 +69,13 @@ Launch the simulation with default parameter values by typing
 and watch them flit about. This combination of parameters should provide a
 reasonable compromise between the various components of Boid behavior. Users
 with more recent systems may wish to scale all the parameters down, since
-there is no limit on frame rate and the simulation may move too fast otherwise.
-On the other hand, a more powerful machine will work great for increasing
-the number of Boids.
+there is no limit on frame rate and the simulation may move too fast. On the 
+other hand, a more powerful machine will work great for increasing the number 
+of Boids.
 
 There are 5 parameters that control the simulation:
 
-1. **Number of boids**. Default setting is 100. The simulation algorithm
+1. **Number of Boids**. Default setting is 100. The simulation algorithm
    scales _extremely_ poorly (O(N^3) in the number of Boids), so large settings
    may not work that well.
 
@@ -86,7 +86,7 @@ There are 5 parameters that control the simulation:
 3. **Separation coefficient.** Default setting is 0.2. Controls the degree to
    which the Boids are repulsed by one another. High values produce sparser
    flock patterns, very low values can cause Boids to overlap. Also functions
-   as a cheap collision detection system.
+   as an ersatz collision detection system.
 
 4. **Alignment coefficient.** Default setting is 0.05. Controls the degree to
    which the Boids tend to move in the same direction. High values result in
