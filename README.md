@@ -11,9 +11,9 @@ absence of any 3D elements, the consequent absence of flight mechanics, and
 the representation of the medium surrounding the Boids as more water-like
 than air-like.
 
-Author: Johan Grahnen (johan.grahnen@gmail.com)
-Copyright: MIT license (see LICENSE)
-Tested on: Linux Mint 14 (nadia), 64-bit, kernel v 3.5.0-17.
+* **Author:** Johan Grahnen (johan.grahnen@gmail.com)
+* **Copyright:** MIT license (see LICENSE)
+* **Tested on:** Linux Mint 14 (nadia), 64-bit, kernel v 3.5.0-17.
 
 Dependencies
 ------------
